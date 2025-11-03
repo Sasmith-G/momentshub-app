@@ -1,68 +1,435 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Comfortaa:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== THEME VARIABLES ===== */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Light Mode - DESATURATED PASTEL BLUE */
+  --bg-primary: #F5F7FB;        /* Changed from #E3F2FD - much lighter and desaturated */
+  --bg-secondary: #E8EDFB;      /* Changed from #BBDEFB - softer, less blue */
+  --text-primary: #1A237E;
+  --text-secondary: #5C6BC0;
+  --primary: #A8DADC;
+  --accent: #FFB5C5;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+.dark {
+  /* Dark Mode - Muted */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --primary: #5A8C8E;
+  --accent: #C77B8B;
 }
-a:hover {
-  color: #535bf2;
+
+/* ===== SMOOTH TRANSITIONS ===== */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
+  font-family: 'Quicksand', 'Comfortaa', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 400ms ease, color 400ms ease;
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+  transition: background 200ms;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background-color: var(--accent);
+  color: white;
+}
+
+/* ===== LOADING SKELETON ===== */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ===== SMOOTH ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-in {
+  animation: fadeIn 200ms ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 300ms ease-out;
+}
+
+.slide-in-from-bottom-2 {
+  animation: slideInFromBottom 300ms ease-out;
+}
+
+.scale-in {
+  animation: scaleIn 200ms ease-out;
+}
+
+/* ===== SPARKLE EFFECT ===== */
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 20px;
+  animation: sparkle 0.6s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(0);
+  }
+}
+
+/* ===== CONFETTI ===== */
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  top: -10px;
+  animation: confetti 3s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes confetti {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx, 100px), var(--ty, 500px)) rotate(360deg);
+  }
+}
+
+/* ===== LOADING DOTS ===== */
+.loading-dots {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  gap: 8px;
+  align-items: center;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.loading-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: bounce 1.4s infinite ease-in-out both;
 }
 
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ===== LINE CLAMP ===== */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.hover\:line-clamp-none:hover {
+  -webkit-line-clamp: unset;
+}
+
+/* ===== RESPONSIVE TEXT SIZES ===== */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+}
+
+/* ===== PARTY MODE ===== */
+.party-mode {
+  animation: rainbow 5s ease infinite;
+}
+
+@keyframes rainbow {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ===== FOCUS VISIBLE ===== */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ===== SMOOTH BUTTON TRANSITIONS ===== */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 200ms ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== HEART BURST ANIMATION ===== */
+@keyframes heartBurst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
   }
-  a:hover {
-    color: #747bff;
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0.5);
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+.heart-burst {
+  position: fixed;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: heartBurst 0.6s ease-out forwards;
+}
+
+/* ===== HEART BEAT ANIMATION ===== */
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.3); }
+  50% { transform: scale(1.2); }
+}
+
+.animate-heart-beat {
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+/* ===== SLIDE DOWN ANIMATION ===== */
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.3s ease-out;
+}
+
+/* ===== PULSE SLOW ANIMATION ===== */
+@keyframes pulseSlow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ===== SCALE ANIMATION ===== */
+@keyframes scaleUp {
+  from { transform: scale(0.95); }
+  to { transform: scale(1); }
+}
+
+/* ===== HOVER EFFECTS ===== */
+.hover\:scale-\[1\.02\]:hover {
+  transform: scale(1.02);
+}
+
+/* ===== ACTIVE STATE BUTTON FEEDBACK ===== */
+.active\:scale-95:active {
+  transform: scale(0.95);
+}
+
+/* ===== DARK MODE SPECIFIC STYLES ===== */
+.dark .dark\:shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+.dark button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark input:focus,
+.dark textarea:focus {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ===== SMOOTH DARK MODE TRANSITIONS ===== */
+html.dark,
+html.dark body {
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+@keyframes heartBurstAnimation {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+    z-index: 99999;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    z-index: 99999;
+  }
+}
+
+.heart-burst-animation {
+  position: fixed !important;
+  font-size: 28px !important;
+  pointer-events: none !important;
+  z-index: 99999 !important;
+  animation: heartBurstAnimation 0.8s ease-out forwards;
+  will-change: transform, opacity;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* ===== FIX: REACTION FALL ANIMATION ===== */
+@keyframes fall {
+  from {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+  to {
+    opacity: 0;
+    /* Apply the fall, the drift, and the rotation from CSS variables */
+    transform: translateY(100vh) translateX(var(--drift, 0px)) rotate(var(--rotation, 0deg));
+  }
+}
+
+.animate-fall {
+  /* The component provides the duration, delay, etc. */
+  /* This class just needs to assign the animation name. */
+  animation-name: fall;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+/* ===== NOTIFICATION ANIMATIONS ===== */
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.animate-slide-in-out {
+  animation: slideInFromRight 0.5s ease-out forwards, 
+             slideOutToRight 0.5s ease-in 3.5s forwards;
 }
